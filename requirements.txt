@@ -1,0 +1,16 @@
+ipython
+notebook
+ipywidgets
+widgetsnbextension
+jupyter_contrib_nbextensions
+numpy
+scipy
+matplotlib
+pandas
+networkx
+
+# statsmodels
+# sympy
+# scikit_learn
+# Theano
+

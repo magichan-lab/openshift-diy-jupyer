@@ -1,0 +1,27 @@
+#!/bin/bash
+
+if [ -f ${OPENSHIFT_REPO_DIR}requirements.txt ]; then
+    ${OPENSHIFT_DATA_DIR}bin/pip3 install -r ${OPENSHIFT_REPO_DIR}requirements.txt
+fi
+
+cd ${OPENSHIFT_DATA_DIR}
+if [ ! -d ${OPENSHIFT_DATA_DIR}notebook ] ; then
+    mkdir -p ${OPENSHIFT_DATA_DIR}notebook
+fi
+
+if [ ! -d ${OPENSHIFT_DATA_DIR}.jupyter ] ; then
+    mkdir -p ${OPENSHIFT_DATA_DIR}.jupyter
+fi
+
+if [ ! -d ${OPENSHIFT_DATA_DIR}.ipython ] ; then
+    mkdir -p ${OPENSHIFT_DATA_DIR}.ipython
+fi
+
+# if [ ! -d ${OPENSHIFT_DATA_DIR}.ipynb_checkpoints ] ; then
+#     mkdir -p ${OPENSHIFT_DATA_DIR}.ipynb_checkpoints
+# fi
+
+if [ -d ${OPENSHIFT_REPO_DIR}config ]; then
+    cp -fa ${OPENSHIFT_REPO_DIR}config/* ${OPENSHIFT_DATA_DIR}.jupyter/
+fi
+
