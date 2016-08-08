@@ -1,4 +1,4 @@
-# Jupyter Notebook on OpenShift using the DIY cartridge (WIP)
+# Jupyter Notebook on OpenShift using the DIY cartridge
 
 ## FUATURE
 
@@ -11,17 +11,6 @@
 * Matplotlib
 * Pandas
 * Networkx
-
-
-*****
-
-## SERIOUS PROBLEMS TO SOLVE
-
-* Cannot connect to the IKernel
-
-
-![](./img/connect_error_01.png)
-![](./img/connect_error_02.png)
 
 
 *****
@@ -67,5 +56,5 @@ Wait for build to finish (This may take at least quarter of an hour)
 
 Open your application url in browser and verify
 
-**- you must enter the password : openshift (default)**
+~~you must enter the password : openshift (default)~~
 
