@@ -5,6 +5,7 @@ if [ ! -d "${OPENSHIFT_DATA_DIR}bin" -o ! -x ${OPENSHIFT_DATA_DIR}bin/python3 ];
     cd ${OPENSHIFT_TMP_DIR}
     wget https://www.python.org/ftp/python/3.5.2/Python-3.5.2.tar.xz
     tar xf Python-3.5.2.tar.xz
+    rm Python-3.5.2.tar.xz
     cd Python-3.5.2
     ./configure --prefix=${OPENSHIFT_DATA_DIR}
     make && make install
@@ -25,6 +26,7 @@ if [ ! -f "${OPENSHIFT_DATA_DIR}lib/libfblas.a" ]; then
     cd ${OPENSHIFT_TMP_DIR}
     wget http://www.netlib.org/blas/blas.tgz
     tar xzf blas.tgz
+    rm blas.tgz
     cd BLAS-*/
     gfortran -O3 -m64 -fPIC -c *.f
     ar r libfblas.a *.o
@@ -39,6 +41,7 @@ if [ ! -f "${OPENSHIFT_DATA_DIR}lib/liblapack.a" ]; then
     cd ${OPENSHIFT_TMP_DIR}
     wget http://www.netlib.org/lapack/lapack.tgz
     tar xzf lapack.tgz
+    rm lapack.tgz
     cd lapack-*/
     cp INSTALL/make.inc.gfortran make.inc
     sed -i -e 's/^OPTS .*$/OPTS = -O2 -frecursive -m64 -fPIC/' make.inc
@@ -46,6 +49,20 @@ if [ ! -f "${OPENSHIFT_DATA_DIR}lib/liblapack.a" ]; then
     make lapacklib
     cp liblapack.a ${OPENSHIFT_DATA_DIR}lib/
 fi
+
+if [ ! -x ${OPENSHIFT_DATA_DIR}bin/dot ]; then
+    cd ${OPENSHIFT_TMP_DIR}
+    wget http://www.graphviz.org/pub/graphviz/stable/SOURCES/graphviz-2.38.0.tar.gz
+    wget http://www.linuxfromscratch.org/patches/blfs/svn/graphviz-2.38.0-consolidated_fixes-1.patch
+    tar xzf graphviz-2.38.0.tar.gz
+    rm graphviz-2.38.0.tar.gz
+    cd graphviz-2.38.0
+    patch -Np1 -i ../graphviz-2.38.0-consolidated_fixes-1.patch
+    autoreconf
+    ./configure --prefix=${OPENSHIFT_DATA_DIR} --disable-php
+    make && make install
+fi
+
 
 ### INSTALL NUMPY/SCIPY ###
 export BLAS=${OPENSHIFT_DATA_DIR}lib/libfblas.a
