@@ -7,7 +7,15 @@ if [ ! -d "${OPENSHIFT_DATA_DIR}bin" -o ! -x ${OPENSHIFT_DATA_DIR}bin/python3 ];
     tar xf Python-3.5.2.tar.xz
     cd Python-3.5.2
     ./configure --prefix=${OPENSHIFT_DATA_DIR}
-    make && make install
+    make
+    [ "$?" != 0 ] && exit 1
+
+    make install
+    [ "$?" != 0 ] && exit 1
+
+    ### CLEANUP ###
+    cd ${OPENSHIFT_TMP_DIR}
+    rm -rf ${OPENSHIFT_TMP_DIR}/*
 fi
 
 ### INSTALL PIP ###
@@ -15,10 +23,12 @@ if [ ! -x ${OPENSHIFT_DATA_DIR}bin/pip3 ]; then
     cd ${OPENSHIFT_TMP_DIR}
     wget https://raw.github.com/pypa/pip/master/contrib/get-pip.py
     ${OPENSHIFT_DATA_DIR}bin/python3 get-pip.py
-fi
+    ${OPENSHIFT_DATA_DIR}bin/python3 -m pip install --upgrade --force-reinstall --no-cache-dir pip
 
-### UPGRADE PIP ###
-${OPENSHIFT_DATA_DIR}bin/python3 -m pip install --upgrade --force-reinstall --no-cache-dir pip
+    ### CLEANUP ###
+    cd ${OPENSHIFT_TMP_DIR}
+    rm -rf ${OPENSHIFT_TMP_DIR}/*
+fi
 
 ### INSTALL BLAS ###
 if [ ! -f "${OPENSHIFT_DATA_DIR}lib/libfblas.a" ]; then
@@ -30,8 +40,13 @@ if [ ! -f "${OPENSHIFT_DATA_DIR}lib/libfblas.a" ]; then
     ar r libfblas.a *.o
     ranlib libfblas.a
     gfortran -O3 -m64 -fPIC -shared *.f -o libfblas.so
+    [ "$?" != 0 ] && exit 1
     cp -f libfblas.a ${OPENSHIFT_DATA_DIR}lib/
     cp -f libfblas.so ${OPENSHIFT_DATA_DIR}lib/
+
+    ### CLEANUP ###
+    cd ${OPENSHIFT_TMP_DIR}
+    rm -rf ${OPENSHIFT_TMP_DIR}/*
 fi
 
 ### INSTALL LAPACK ###
@@ -44,7 +59,12 @@ if [ ! -f "${OPENSHIFT_DATA_DIR}lib/liblapack.a" ]; then
     sed -i -e 's/^OPTS .*$/OPTS = -O2 -frecursive -m64 -fPIC/' make.inc
     sed -i -e 's/^NOOPT .*$/NOOPT = -O0 -frecursive -m64 -fPIC/' make.inc
     make lapacklib
+    [ "$?" != 0 ] && exit 1
     cp liblapack.a ${OPENSHIFT_DATA_DIR}lib/
+
+    ### CLEANUP ###
+    cd ${OPENSHIFT_TMP_DIR}
+    rm -rf ${OPENSHIFT_TMP_DIR}/*
 fi
 
 ### INSTALL NUMPY/SCIPY ###
@@ -52,6 +72,3 @@ export BLAS=${OPENSHIFT_DATA_DIR}lib/libfblas.a
 export LAPACK=${OPENSHIFT_DATA_DIR}lib/liblapack.a
 ${OPENSHIFT_DATA_DIR}bin/pip3 install --no-cache-dir -v numpy
 ${OPENSHIFT_DATA_DIR}bin/pip3 install --no-cache-dir -v scipy
-
-### CLEANUP ###
-rm -rf ${OPENSHIFT_TMP_DIR}/*
