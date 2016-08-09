@@ -20,5 +20,38 @@ fi
 ### UPGRADE PIP ###
 ${OPENSHIFT_DATA_DIR}bin/python3 -m pip install --upgrade --force-reinstall --no-cache-dir pip
 
+### INSTALL BLAS ###
+if [ ! -f "${OPENSHIFT_DATA_DIR}lib/libfblas.a" ]; then
+    cd ${OPENSHIFT_TMP_DIR}
+    wget http://www.netlib.org/blas/blas.tgz
+    tar xzf blas.tgz
+    cd BLAS-*/
+    gfortran -O3 -m64 -fPIC -c *.f
+    ar r libfblas.a *.o
+    ranlib libfblas.a
+    gfortran -O3 -m64 -fPIC -shared *.f -o libfblas.so
+    cp -f libfblas.a ${OPENSHIFT_DATA_DIR}lib/
+    cp -f libfblas.so ${OPENSHIFT_DATA_DIR}lib/
+fi
+
+### INSTALL LAPACK ###
+if [ ! -f "${OPENSHIFT_DATA_DIR}lib/liblapack.a" ]; then
+    cd ${OPENSHIFT_TMP_DIR}
+    wget http://www.netlib.org/lapack/lapack.tgz
+    tar xzf lapack.tgz
+    cd lapack-*/
+    cp INSTALL/make.inc.gfortran make.inc
+    sed -i -e 's/^OPTS .*$/OPTS = -O2 -frecursive -m64 -fPIC/' make.inc
+    sed -i -e 's/^NOOPT .*$/NOOPT = -O0 -frecursive -m64 -fPIC/' make.inc
+    make lapacklib
+    cp liblapack.a ${OPENSHIFT_DATA_DIR}lib/
+fi
+
+### INSTALL NUMPY/SCIPY ###
+export BLAS=${OPENSHIFT_DATA_DIR}lib/libfblas.a
+export LAPACK=${OPENSHIFT_DATA_DIR}lib/liblapack.a
+${OPENSHIFT_DATA_DIR}bin/pip3 install --no-cache-dir -v numpy
+${OPENSHIFT_DATA_DIR}bin/pip3 install --no-cache-dir -v scipy
+
 ### CLEANUP ###
 rm -rf ${OPENSHIFT_TMP_DIR}/*

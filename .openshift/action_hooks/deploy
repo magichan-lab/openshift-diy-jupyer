@@ -1,5 +1,8 @@
 #!/bin/bash
 
+export BLAS=${OPENSHIFT_DATA_DIR}lib/libfblas.a
+export LAPACK=${OPENSHIFT_DATA_DIR}lib/liblapack.a
+
 ### INSTALL PYTHON PACKAGEs ###
 if [ -f ${OPENSHIFT_REPO_DIR}requirements.txt ]; then
     ${OPENSHIFT_DATA_DIR}bin/pip3 install -r ${OPENSHIFT_REPO_DIR}requirements.txt --no-cache-dir
