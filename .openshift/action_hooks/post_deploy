@@ -2,8 +2,6 @@
 
 PATH=${OPENSHIFT_DATA_DIR}bin:$PATH
 
-IPYTHONDIR=${OPENSHIFT_DATA_DIR}.ipython
-
 JUPYTER_DATA_DIR=${OPENSHIFT_DATA_DIR}
 JUPYTER_PATH=${OPENSHIFT_DATA_DIR}.jupyter
 JUPYTER_RUNTIME_DIR=${OPENSHIFT_TMP_DIR}
@@ -11,10 +9,7 @@ JUPYTER_CONFIG_DIR=${OPENSHIFT_DATA_DIR}.jupyter
 
 cd ${OPENSHIFT_DATA_DIR}
 
-jupyter notebook \
-	--no-browser \
-	--ip=${OPENSHIFT_DIY_IP} \
-	--port=${OPENSHIFT_DIY_PORT} \
-	--log-level=DEBUG \
-	notebook \
-	> ${OPENSHIFT_DIY_LOG_DIR}server.log 2>&1 &
+jupyter nbextension enable --user --py widgetsnbextension
+jupyter nbextensions_configurator enable --user
+
+jupyter contrib nbextension install --user
