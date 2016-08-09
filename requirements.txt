@@ -5,12 +5,11 @@ widgetsnbextension
 jupyter_contrib_nbextensions
 numpy
 scipy
+sympy
 matplotlib
 pandas
 networkx
 
 # statsmodels
-# sympy
 # scikit_learn
 # Theano
-
