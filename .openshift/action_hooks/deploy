@@ -21,6 +21,10 @@ fi
 #     mkdir -p ${OPENSHIFT_DATA_DIR}.ipynb_checkpoints
 # fi
 
+if [ -d ${OPENSHIFT_REPO_DIR}notebook ] ; then
+    cp -fa  ${OPENSHIFT_REPO_DIR}notebook/* ${OPENSHIFT_DATA_DIR}notebook/
+fi
+
 if [ -d ${OPENSHIFT_REPO_DIR}config ]; then
     cp -fa ${OPENSHIFT_REPO_DIR}config/* ${OPENSHIFT_DATA_DIR}.jupyter/
 fi
