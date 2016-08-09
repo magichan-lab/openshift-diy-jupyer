@@ -2,8 +2,7 @@
 
 ### INSTALL PYTHON PACKAGEs ###
 if [ -f ${OPENSHIFT_REPO_DIR}requirements.txt ]; then
-    export PIP_DOWNLOAD_CACHE=${OPENSHIFT_TMP_DIR}/
-    ${OPENSHIFT_DATA_DIR}bin/pip3 install -r ${OPENSHIFT_REPO_DIR}requirements.txt
+    ${OPENSHIFT_DATA_DIR}bin/pip3 install -r ${OPENSHIFT_REPO_DIR}requirements.txt --no-cache-dir
 fi
 
 cd ${OPENSHIFT_DATA_DIR}
