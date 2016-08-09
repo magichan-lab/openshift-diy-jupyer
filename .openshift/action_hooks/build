@@ -15,7 +15,7 @@ if [ ! -x ${OPENSHIFT_DATA_DIR}bin/pip3 ]; then
     cd ${OPENSHIFT_TMP_DIR}
     wget https://raw.github.com/pypa/pip/master/contrib/get-pip.py
     ${OPENSHIFT_DATA_DIR}bin/python3 get-pip.py
-    ${OPENSHIFT_DATA_DIR}bin/pip3 install --upgrade pip
+    ${OPENSHIFT_DATA_DIR}bin/python3 -m pip install --upgrade pip
 fi
 
 # cleanup
