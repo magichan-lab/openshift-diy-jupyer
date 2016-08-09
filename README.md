@@ -26,6 +26,7 @@
 
 ````
 git clone ssh://************************@appname-namespace.rhcloud.com/~/git/appname.git/
+cd appname-namespace
 ````
 
 ### 3. Delete template application source code
@@ -49,7 +50,7 @@ git merge --allow-unrelated-histories github/master
 git push
 ````
 
-Wait for build to finish (This may take at least quarter of an hour)
+Wait for build to finish (This may take at 20 minutes)
 
 
 ### 6. Open Jupyter Notebook page
