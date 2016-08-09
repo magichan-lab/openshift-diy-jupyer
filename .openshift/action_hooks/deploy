@@ -1,10 +1,14 @@
 #!/bin/bash
 
+### INSTALL PYTHON PACKAGEs ###
 if [ -f ${OPENSHIFT_REPO_DIR}requirements.txt ]; then
+    export PIP_DOWNLOAD_CACHE=${OPENSHIFT_TMP_DIR}/
     ${OPENSHIFT_DATA_DIR}bin/pip3 install -r ${OPENSHIFT_REPO_DIR}requirements.txt
 fi
 
 cd ${OPENSHIFT_DATA_DIR}
+
+### CREATE NOTEBOOK DIR ###
 if [ ! -d ${OPENSHIFT_DATA_DIR}notebook ] ; then
     mkdir -p ${OPENSHIFT_DATA_DIR}notebook
 fi
@@ -28,4 +32,7 @@ fi
 if [ -d ${OPENSHIFT_REPO_DIR}config ]; then
     cp -fa ${OPENSHIFT_REPO_DIR}config/* ${OPENSHIFT_DATA_DIR}.jupyter/
 fi
+
+### CLEANUP ###
+rm -rf ${OPENSHIFT_TMP_DIR}/*
 
