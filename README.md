@@ -26,7 +26,7 @@
 
 ````
 git clone ssh://************************@appname-namespace.rhcloud.com/~/git/appname.git/
-cd appname-namespace
+cd appname
 ````
 
 ### 3. Delete template application source code
