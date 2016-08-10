@@ -22,21 +22,23 @@
 - Select **Do-It-Yourself 0.1** cartridge on the Choice a type of application form.
 - Don't have to enter a git repository url on the Configure the application form.
 
-### 2. Clone your application repository
+### 2. Add the PostgreSQL cartridge to your application (OPTIONAL)
+
+### 3. Clone your application repository
 
 ````
 git clone ssh://************************@appname-namespace.rhcloud.com/~/git/appname.git/
 cd appname
 ````
 
-### 3. Delete template application source code
+### 4. Delete template application source code
 
 ````
 git rm -r README.md diy misc .openshift
 git commit -m "Remove template application"
 ````
 
-### 4. Pull source code from this repository
+### 5. Pull source code from this repository
 
 ````
 git remote add github https://github.com/magichan-lab/openshift-diy-jupyer.git
@@ -44,7 +46,7 @@ git fetch github
 git merge --allow-unrelated-histories github/master
 ````
 
-### 5. Push changes
+### 6. Push changes
 
 ````
 git push
@@ -53,7 +55,7 @@ git push
 Wait for build to finish (This may take at 20 minutes)
 
 
-### 6. Open Jupyter Notebook page
+### 7. Open Jupyter Notebook page
 
 Open your application url in browser and verify
 
