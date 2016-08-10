@@ -9,6 +9,11 @@ export JUPYTER_CONFIG_DIR=${OPENSHIFT_DATA_DIR}.jupyter
 
 cd ${OPENSHIFT_DATA_DIR}
 
+if [ "x${OPENSHIFT_POSTGRESQL_DB_URL}" != 'x' ]; then
+    export DATABASE_URL="${OPENSHIFT_POSTGRESQL_DB_URL}/${OPENSHIFT_APP_NAME}"
+    LANG=en_US.UTF-8 pgcontents init -l $DATABASE_URL --no-prompt
+fi
+
 jupyter nbextension enable --user --py widgetsnbextension
 jupyter nbextensions_configurator enable --user
 
