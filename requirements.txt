@@ -1,5 +1,7 @@
-ipython
+ipython<5.0.0
 notebook
+pgcontents
+nose
 ipywidgets
 widgetsnbextension
 jupyter_contrib_nbextensions
