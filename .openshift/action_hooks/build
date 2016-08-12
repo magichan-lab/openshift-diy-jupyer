@@ -91,3 +91,16 @@ export LAPACK=${OPENSHIFT_DATA_DIR}lib/liblapack.a
 ${OPENSHIFT_DATA_DIR}bin/pip3 install --no-cache-dir -v numpy
 ${OPENSHIFT_DATA_DIR}bin/pip3 install --no-cache-dir -v scipy
 ${OPENSHIFT_DATA_DIR}bin/pip3 install --no-cache-dir -v matplotlib
+
+
+### INSTALL R PACKAGEs ###
+if [ -x ${OPENSHIFT_DATA_DIR}bin/R ]; then
+    ${OPENSHIFT_DATA_DIR}bin/R --quiet --vanilla <<EOF
+install.packages(c('uuid', 'base64enc', 'evaluate', 'repr', 'IRdisplay', 'crayon', 'pbdZMQ', 'devtools'), repos="http://cran.cnr.berkeley.edu")
+devtools::install_github('IRkernel/IRkernel')
+EOF
+
+    ### CLEANUP ###
+    cd ${OPENSHIFT_TMP_DIR}
+    rm -rf ${OPENSHIFT_TMP_DIR}/*
+fi
