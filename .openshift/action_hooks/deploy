@@ -1,12 +1,15 @@
 #!/bin/bash
 
+export PATH=${OPENSHIFT_DATA_DIR}bin:$PATH
+
 export BLAS=${OPENSHIFT_DATA_DIR}lib/libfblas.a
 export LAPACK=${OPENSHIFT_DATA_DIR}lib/liblapack.a
 
-### INSTALL PYTHON PACKAGEs ###
-if [ -f ${OPENSHIFT_REPO_DIR}requirements.txt ]; then
-    ${OPENSHIFT_DATA_DIR}bin/pip3 install -r ${OPENSHIFT_REPO_DIR}requirements.txt --no-cache-dir
-fi
+export JUPYTER_DATA_DIR=${OPENSHIFT_DATA_DIR}
+export JUPYTER_PATH=${OPENSHIFT_DATA_DIR}.jupyter
+export JUPYTER_RUNTIME_DIR=${OPENSHIFT_TMP_DIR}
+export JUPYTER_CONFIG_DIR=${OPENSHIFT_DATA_DIR}.jupyter
+
 
 cd ${OPENSHIFT_DATA_DIR}
 
@@ -27,6 +30,23 @@ if [ -d ${OPENSHIFT_REPO_DIR}config ]; then
     cp -fa ${OPENSHIFT_REPO_DIR}config/* ${OPENSHIFT_DATA_DIR}.jupyter/
 fi
 
-### CLEANUP ###
-rm -rf ${OPENSHIFT_TMP_DIR}/*
+### INSTALL PYTHON PACKAGEs ###
+if [ -f ${OPENSHIFT_REPO_DIR}requirements.txt ]; then
+    pip3 install -r ${OPENSHIFT_REPO_DIR}requirements.txt --no-cache-dir
+fi
 
+### INSTALL JUPYTER NOTEBOOK EXTENSIONS ###
+jupyter contrib nbextension install --user
+
+### MIGRATE POSTGRE SQL ###
+if [ "x${OPENSHIFT_POSTGRESQL_DB_URL}" != 'x' ]; then
+    export DATABASE_URL="${OPENSHIFT_POSTGRESQL_DB_URL}/${OPENSHIFT_APP_NAME}"
+    LANG=en_US.UTF-8 pgcontents init -l $DATABASE_URL --no-prompt
+fi
+
+### SETUP JUPYTER NOTEBOOK EXTENSIONS ###
+jupyter nbextension enable --user --py widgetsnbextension
+jupyter nbextensions_configurator enable --user
+
+### CLEANUP TMP DIR ###
+rm -rf ${OPENSHIFT_TMP_DIR}/*
