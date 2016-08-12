@@ -5,13 +5,14 @@ nose
 ipywidgets
 widgetsnbextension
 jupyter_contrib_nbextensions
+RISE
 numpy
 scipy
-sympy
 matplotlib
 pandas
 networkx
 
+# sympy
 # statsmodels
 # scikit_learn
 # Theano

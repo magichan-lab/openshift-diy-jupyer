@@ -38,6 +38,10 @@ fi
 ### INSTALL JUPYTER NOTEBOOK EXTENSIONS ###
 jupyter contrib nbextension install --user
 
+### INSTALL JUPYTER NOTEBOOK SLIDESHOW EXTENSION (RISE) ###
+jupyter nbextension install rise --py --sys-prefix
+
+
 ### MIGRATE POSTGRE SQL ###
 if [ "x${OPENSHIFT_POSTGRESQL_DB_URL}" != 'x' ]; then
     export DATABASE_URL="${OPENSHIFT_POSTGRESQL_DB_URL}/${OPENSHIFT_APP_NAME}"
@@ -45,8 +49,9 @@ if [ "x${OPENSHIFT_POSTGRESQL_DB_URL}" != 'x' ]; then
 fi
 
 ### SETUP JUPYTER NOTEBOOK EXTENSIONS ###
-jupyter nbextension enable --user --py widgetsnbextension
 jupyter nbextensions_configurator enable --user
+jupyter nbextension enable --user --py --sys-prefix widgetsnbextension
+jupyter nbextension enable --user --py --sys-prefix rise
 
 ### CLEANUP TMP DIR ###
 rm -rf ${OPENSHIFT_TMP_DIR}/*

@@ -6,6 +6,7 @@
 * Jupyter Notebook
     * IPython Widgets
     * Jupyter Notebook Extensions
+    * Jupyter Slideshow Extension (RISE)
 * Numpy
 * Scipy
 * Matplotlib
